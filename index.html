@@ -52,8 +52,8 @@
     <div class="counter" id="counter">0</div>
     <div class="total-count">Total 108s: <span id="totalCount">0</span></div>
     <div class="buttons">
-        <button onclick="updateCounter(-1)">-</button>
-        <button onclick="updateCounter(1)">+</button>
+        <button id="decrement">-</button>
+        <button id="increment">+</button>
     </div>
     <div class="warning" id="warning">Vibration not supported in this browser.</div>
 
@@ -88,8 +88,17 @@
             }
         }
 
-        // Optional: Allow screen taps to increment the counter
-        document.body.addEventListener('click', () => updateCounter(1));
+        // Add event listeners to buttons
+        document.getElementById('increment').addEventListener('click', () => updateCounter(1));
+        document.getElementById('decrement').addEventListener('click', () => updateCounter(-1));
+
+        // Optional: Allow screen taps to increment the counter (outside the buttons)
+        document.body.addEventListener('click', (event) => {
+            // Check if the click was outside the buttons
+            if (!event.target.closest('.buttons')) {
+                updateCounter(1);
+            }
+        });
     </script>
 </body>
 </html>
