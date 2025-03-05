@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .counter {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .total-count {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            font-size: 2rem;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .warning {
+            color: red;
+            font-size: 1rem;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter" id="counter">0</div>
+    <div class="total-count">Total 108s: <span id="totalCount">0</span></div>
+    <div class="buttons">
+        <button id="decrement">-</button>
+        <button id="increment">+</button>
+    </div>
+    <div class="warning" id="warning">Vibration not supported in this browser.</div>
+
+    <script>
+        let count = 0;
+        let totalCount = 0;
+
+        function vibrate(duration) {
+            if (navigator.vibrate) {
+                navigator.vibrate(duration);
+            } else {
+                // Show warning if vibration is not supported
+                document.getElementById('warning').style.display = 'block';
+            }
+        }
+
+        function updateCounter(change) {
+            count += change;
+            // Ensure the counter doesn't go below 0
+            if (count < 0) {
+                count = 0;
+            }
+            document.getElementById('counter').textContent = count;
+
+            if (count === 108) {
+                vibrate(1000); // Vibrate for 1 second
+                count = 0;
+                totalCount++;
+                document.getElementById('totalCount').textContent = totalCount;
+            } else {
+                vibrate(50); // Small vibration for each tap
+            }
+        }
+
+        // Add event listeners to buttons
+        document.getElementById('increment').addEventListener('click', () => updateCounter(1));
+        document.getElementById('decrement').addEventListener('click', () => updateCounter(-1));
+
+        // Optional: Allow screen taps to increment the counter (outside the buttons)
+        document.body.addEventListener('click', (event) => {
+            // Check if the click was outside the buttons
+            if (!event.target.closest('.buttons')) {
+                updateCounter(1);
+            }
+        });
+    </script>
+</body>
+</html>
