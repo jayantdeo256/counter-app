@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap Counter</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .counter {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .total-count {
+            font-size: 1.5rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter" id="counter">0</div>
+    <div class="total-count">Total 108s: <span id="totalCount">0</span></div>
+
+    <script>
+        let count = 0;
+        let totalCount = 0;
+
+        function vibrate(duration) {
+            if (navigator.vibrate) {
+                navigator.vibrate(duration);
+            }
+        }
+
+        function updateCounter() {
+            count++;
+            document.getElementById('counter').textContent = count;
+
+            if (count === 108) {
+                vibrate(1000); // Vibrate for 1 second
+                count = 0;
+                totalCount++;
+                document.getElementById('totalCount').textContent = totalCount;
+            } else {
+                vibrate(50); // Small vibration for each tap
+            }
+        }
+
+        document.body.addEventListener('click', updateCounter);
+    </script>
+</body>
+</html>
